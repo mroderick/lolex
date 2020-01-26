@@ -18,7 +18,7 @@ if (!jsdom) {
 }
 
 var assert = require("@sinonjs/referee-sinon").assert;
-var lolex = require("../src/lolex-src");
+var FakeClock = require("../src/fake-clock-src");
 var sinon = require("@sinonjs/referee-sinon").sinon;
 
 describe("withGlobal", function() {
@@ -28,12 +28,12 @@ describe("withGlobal", function() {
         var dom = new jsdom.JSDOM("", { runScripts: "dangerously" });
         jsdomGlobal = dom.window;
 
-        withGlobal = lolex.withGlobal(jsdomGlobal);
+        withGlobal = FakeClock.withGlobal(jsdomGlobal);
         timers = Object.keys(withGlobal.timers);
     });
 
-    it("matches the normal lolex API", function() {
-        assert.equals(Object.keys(withGlobal), Object.keys(lolex));
+    it("matches the normal FakeClock API", function() {
+        assert.equals(Object.keys(withGlobal), Object.keys(FakeClock));
     });
 
     it("should support basic setTimeout", function() {
@@ -89,7 +89,7 @@ describe("globally configured browser objects", function() {
         };
         copyProps(window, global);
 
-        withGlobal = lolex.withGlobal(global);
+        withGlobal = FakeClock.withGlobal(global);
     }
 
     function tearDownGlobal() {
